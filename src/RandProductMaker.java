@@ -204,7 +204,6 @@ public class RandProductMaker extends JFrame
     {
         //gets user input
         name = nameInput.getText();
-
         description = desInput.getText();
         ID = idInput.getText();
 
