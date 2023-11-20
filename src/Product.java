@@ -5,6 +5,7 @@ public class Product
     private String description = "";
     private double cost = 0;
 
+
     public Product(String ID, String name, String description, double cost)
     {
         this.ID = ID;
