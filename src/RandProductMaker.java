@@ -20,6 +20,7 @@ public class RandProductMaker extends JFrame
     //JButtons
     JButton quitBtn;
     JButton addBtn;
+    JButton createBtn;
 
     //JLabels
     JLabel nameLabel;
@@ -43,6 +44,10 @@ public class RandProductMaker extends JFrame
     double cost = 0;
     int objCount = 0;
     Product item;
+    String finalName ="";
+    String finalDes = "";
+    String finalID ="";
+    double price =0;
     ArrayList<Product> products = new ArrayList<>();
 
 
@@ -117,6 +122,7 @@ public class RandProductMaker extends JFrame
         buttonPnl.setLayout(new GridLayout(1,2));
 
         addBtn = new JButton("Add Object");
+        createBtn = new JButton("Create File");
         quitBtn = new JButton("Quit");
 
         addBtn.addActionListener((ActionEvent ae) -> writeBinaryFile());
@@ -134,32 +140,40 @@ public class RandProductMaker extends JFrame
 
         getProduct();
 
-        long pos = objCount * 124;
-
-
-
-
             try
             {
                 RandomAccessFile file = new RandomAccessFile("data.bin", "rw");
 
+                //reads file
                 file.seek(objCount * 124);
 
-                //System.out.println(file.getFilePointer());
+                byte[] nameBytes = new byte[35];
+                file.read(nameBytes);
+                finalName = new String(nameBytes, StandardCharsets.UTF_8).trim();
 
+                byte[] desByte = new byte[75];
+                file.read(desByte);
+                finalDes = new String(desByte, StandardCharsets.UTF_8).trim();
 
+                byte[] IDByte = new byte[6];
+                file.read(IDByte);
+                finalID = new String(IDByte, StandardCharsets.UTF_8).trim();
+
+                price = file.readDouble();
+
+                Product item = new Product(finalID,finalName,finalDes,price); // saves data read from a file to a Product Object
+                products.add(item);
+
+                //writes to file
+                file.seek(objCount * 124);
                 file.write(String.format("%-35s", name).getBytes(StandardCharsets.UTF_8));
                 file.write(String.format("%-75s", description).getBytes(StandardCharsets.UTF_8));
                 file.write(String.format("%-6s", ID).getBytes(StandardCharsets.UTF_8));
 
                 file.writeDouble(cost);
 
-                byte[] Byte = new byte[124];
 
-               file.read(Byte);
-
-
-
+                System.out.println(finalName + " " + finalDes + " " + finalID + " " + price);
 
 
             }
@@ -173,20 +187,18 @@ public class RandProductMaker extends JFrame
             }
 
 
-
-
         idInput.setText("");
         nameInput.setText("");
         costInput.setText("");
         desInput.setText("");
 
-        System.out.println(products);
 
         objCount = objCount + 1;
 
         String objStr = String.valueOf(objCount);
         countOutput.setText(objStr);
     }
+
 
     private void getProduct()
     {
@@ -207,8 +219,6 @@ public class RandProductMaker extends JFrame
         //sets name of the product
         item.setName(name);
 
-        //records the product object to an array list products
-        products.add(item);
 
 
     }
