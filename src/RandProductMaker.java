@@ -172,7 +172,6 @@ public class RandProductMaker extends JFrame
 
                 file.writeDouble(cost);
 
-
                 System.out.println(finalName + " " + finalDes + " " + finalID + " " + price);
 
 
@@ -191,6 +190,12 @@ public class RandProductMaker extends JFrame
         nameInput.setText("");
         costInput.setText("");
         desInput.setText("");
+
+        for (Product i : products)
+        {
+            System.out.println(i);
+        }
+
 
 
         objCount = objCount + 1;
@@ -221,10 +226,8 @@ public class RandProductMaker extends JFrame
 
 
 
+
     }
-
-
-
 
 
 
